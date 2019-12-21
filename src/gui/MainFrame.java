@@ -1,5 +1,6 @@
 package gui;
 import java.awt.BorderLayout;
+import compiler.*;
 import java.awt.Dimension;
 import java.awt.Menu;
 import java.awt.Panel;
@@ -29,15 +30,6 @@ public class MainFrame extends JFrame{
 		northPanel.add(compilerButton);
 		northPanel.add(DAGButton);
 		box.add(northPanel);
-		compilerButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFrame showInfo = new JFrame("具体信息展示");
-				showInfo.setSize(900,1000);
-				showInfo.setVisible(true);
-			}
-		});
 		//添加文本域-->中间
 		Text textArea = new Text(22, 100);
 		JPanel textPanel = new JPanel();
@@ -46,6 +38,16 @@ public class MainFrame extends JFrame{
 		scrollPane.setRowHeaderView(new LineNumberHeaderView());
 		textPanel.add(scrollPane);
 		box.add(textPanel);
+		compilerButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFrame showInfo = new JFrame("具体信息展示");
+				Lex lex = new Lex(textArea.getText());
+				showInfo.setSize(900,1000);
+				showInfo.setVisible(true);
+			}
+		});
 		//菜单
 		MyMenu menuBar = new MyMenu(textArea);
 		setJMenuBar(menuBar);
