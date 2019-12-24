@@ -1,6 +1,8 @@
 package gui;
 import java.awt.BorderLayout;
 import compiler.*;
+
+
 import java.awt.Dimension;
 import java.awt.Menu;
 import java.awt.Panel;
@@ -25,10 +27,12 @@ public class MainFrame extends JFrame{
 		Box box = Box.createVerticalBox();
 		//编译按钮-->上方
 		JButton compilerButton = new JButton("编译");
-		JButton DAGButton = new JButton("DAG优化");
+		JLabel daginfo = new JLabel("请输入要保存的变量信息，用分号隔开");
+		JTextField Daginput = new JTextField(20);
 		JPanel northPanel = new JPanel();
 		northPanel.add(compilerButton);
-		northPanel.add(DAGButton);
+		northPanel.add(daginfo);
+		northPanel.add(Daginput);
 		box.add(northPanel);
 		//添加文本域-->中间
 		Text textArea = new Text(22, 100);
@@ -43,7 +47,26 @@ public class MainFrame extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFrame showInfo = new JFrame("具体信息展示");
+				FileOperator fo = new FileOperator();
 				Lex lex = new Lex(textArea.getText());
+				JPanel lexPanel = new JPanel();
+				JTextArea lexTextArea = new JTextArea(fo.showLex());
+				JScrollPane lexScrollPane = new JScrollPane(lexTextArea);
+				lexPanel.setSize(400,200);
+				lexPanel.add(lexTextArea);
+				showInfo.add(lexPanel,BorderLayout.NORTH);
+				showInfo.add(lexScrollPane);
+				//语法
+				Parse p = new Parse();
+				JPanel parsePanel = new JPanel();
+				JTextArea parseTextArea = new JTextArea(fo.showParse());
+				JScrollPane parseScrollPane = new JScrollPane(parseTextArea);
+				parsePanel.setSize(400,200);
+				parsePanel.add(parseTextArea);
+				showInfo.add(parsePanel,BorderLayout.WEST);
+				showInfo.add(parseScrollPane);
+				//DAG
+				DAG dag = new DAG(Daginput.getText());
 				showInfo.setSize(900,1000);
 				showInfo.setVisible(true);
 			}

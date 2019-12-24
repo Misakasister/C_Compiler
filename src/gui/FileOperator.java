@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 
 public class FileOperator {
+	private ArrayList<String> data;
+
 	public String leadingFile(String filePath) {
 		File file = new File(filePath);
 		StringBuffer strbuff = new StringBuffer();
@@ -116,8 +118,9 @@ public class FileOperator {
 	}
 	
 	//读出语法分析lex的结果
-	public void readLex(){
+	public ArrayList<String> readLex(){
 		File f = new File("src/lex.data");
+		ArrayList<String> data = new ArrayList<String>();
 		FileInputStream fis = null;
 		try {
 			fis = new FileInputStream(f);
@@ -128,11 +131,137 @@ public class FileOperator {
 		DataInputStream dis = new DataInputStream(fis);
 		try {
 			while(dis.available()!=0) {
-				System.out.println(dis.readUTF());
+				data.add(dis.readUTF());
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return data;
 	}
+	//展示语法结果
+	public String showLex(){
+		File f = new File("src/lex.data");
+		StringBuffer buffer = new StringBuffer();
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(f);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DataInputStream dis = new DataInputStream(fis);
+		try {
+			while(dis.available()!=0) {
+				buffer.append(dis.readUTF()+"\n");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new String(buffer);
+	}
+	//将语法分析结果按行写入parse.data文件
+	public void writeParse(ArrayList<String> parseData) {
+		File f = new File("src/parse.data");
+		if(!f.exists()) {
+			try {
+				f.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		FileOutputStream fos=null;
+		try {
+			fos = new FileOutputStream(f);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DataOutputStream dos = new DataOutputStream(fos);
+		for(int i = 0; i < parseData.size(); i++) {
+			try {
+				dos.writeUTF(parseData.get(i));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	//展示语法分析
+	public String showParse() {
+		File f = new File("src/parse.data");
+		FileInputStream fis=null;
+		try {
+			fis = new FileInputStream(f);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DataInputStream dis = new DataInputStream(fis);
+		StringBuffer buffer = new StringBuffer();
+		try {
+			while(dis.available()!=0) {
+				buffer.append(dis.readUTF()+"\n");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new String(buffer);
+	}
+	
+	//将程序中的表达式按行写入express.data文件
+		public void writeExpress(ArrayList<String> parseData) {
+			File f = new File("src/express.data");
+			if(!f.exists()) {
+				try {
+					f.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			FileOutputStream fos=null;
+			try {
+				fos = new FileOutputStream(f);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DataOutputStream dos = new DataOutputStream(fos);
+			for(int i = 0; i < parseData.size(); i++) {
+				try {
+					dos.writeUTF(parseData.get(i));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		//读出表达式
+		public ArrayList<String> readExpress(){
+			File f = new File("src/express.data");
+			ArrayList<String> data = new ArrayList<String>();
+			FileInputStream fis = null;
+			try {
+				fis = new FileInputStream(f);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DataInputStream dis = new DataInputStream(fis);
+			try {
+				while(dis.available()!=0) {
+					data.add(dis.readUTF());
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return data;
+		}
 }

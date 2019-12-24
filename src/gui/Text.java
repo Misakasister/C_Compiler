@@ -6,7 +6,7 @@ import javax.swing.*;
 //代码输入框组件
 public class Text extends JTextArea {
 	public Text(int lines, int columns) {
-		super("int main() {\n\n    return 0;\n}",lines,columns);
+		super("main() {\n\n    \n}",lines,columns);
 		setLineWrap(true);
 		Font  f  = new Font(Font.SERIF,Font.PLAIN, 14);
 		this.setFont(f);
