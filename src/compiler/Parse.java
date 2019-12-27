@@ -12,21 +12,24 @@ public class Parse {
 	private FileOperator fo;
 	private ArrayList<String> parseData;
 	private ArrayList<String> expressData;
+	private ArrayList<String> errorDate;
 	public Parse() {
 		fo = new FileOperator();
+		errorDate = new ArrayList<String>();
 		parseData= new ArrayList<String>();
 		expressData = new ArrayList<String>();
 		this.data=fo.readLex();
 		parseFind();
 		fo.writeParse(parseData);
 		fo.writeExpress(expressData);
+		fo.writeError(errorDate);
 	}
 	
 	//在词法分析结果中找到表达式
 	public void parseFind() {
 		ArrayList<String> temp = new ArrayList<String>();
 		for(int i = 3; i < data.size(); i++) {
-			if(data.get(i).startsWith("(keyword,if)")) {//是if跳过括号的
+			if(data.get(i).startsWith("(keyword,if)")||data.get(i).startsWith("(keyword,while)")) {//是if跳过括号的
 				int j = i;
 				for(j = i; j < data.size(); j++) {
 					if(data.get(j).endsWith("))")) {
@@ -97,7 +100,7 @@ public class Parse {
 			parseData.add("accept");
 		}else {
 			parseData.add("error");
-			System.out.println("表达式不正确");
+			errorDate.add("表示式不正确");
 		}
 	}
 	
@@ -150,11 +153,11 @@ public class Parse {
 					current++;
 				}else {
 					parseData.add("error");
-					System.out.println("括号匹配错误");
+					errorDate.add("括号匹配错误");
 				}
 		}else {
 			parseData.add("error");
-			System.out.println("表达式错误");
+			errorDate.add("表达式错误");
 		}
 	}
 }

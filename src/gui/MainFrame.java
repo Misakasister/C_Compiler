@@ -6,6 +6,7 @@ import compiler.*;
 import java.awt.Dimension;
 import java.awt.Menu;
 import java.awt.Panel;
+import java.awt.TextArea;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,8 +30,10 @@ public class MainFrame extends JFrame{
 		JButton compilerButton = new JButton("编译");
 		JLabel daginfo = new JLabel("请输入要保存的变量信息，用分号隔开");
 		JTextField Daginput = new JTextField(20);
+		JRadioButton c1 = new JRadioButton("dag优化");
 		JPanel northPanel = new JPanel();
 		northPanel.add(compilerButton);
+		northPanel.add(c1);
 		northPanel.add(daginfo);
 		northPanel.add(Daginput);
 		box.add(northPanel);
@@ -42,35 +45,6 @@ public class MainFrame extends JFrame{
 		scrollPane.setRowHeaderView(new LineNumberHeaderView());
 		textPanel.add(scrollPane);
 		box.add(textPanel);
-		compilerButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFrame showInfo = new JFrame("具体信息展示");
-				FileOperator fo = new FileOperator();
-				Lex lex = new Lex(textArea.getText());
-				JPanel lexPanel = new JPanel();
-				JTextArea lexTextArea = new JTextArea(fo.showLex());
-				JScrollPane lexScrollPane = new JScrollPane(lexTextArea);
-				lexPanel.setSize(400,200);
-				lexPanel.add(lexTextArea);
-				showInfo.add(lexPanel,BorderLayout.NORTH);
-				showInfo.add(lexScrollPane);
-				//语法
-				Parse p = new Parse();
-				JPanel parsePanel = new JPanel();
-				JTextArea parseTextArea = new JTextArea(fo.showParse());
-				JScrollPane parseScrollPane = new JScrollPane(parseTextArea);
-				parsePanel.setSize(400,200);
-				parsePanel.add(parseTextArea);
-				showInfo.add(parsePanel,BorderLayout.WEST);
-				showInfo.add(parseScrollPane);
-				//DAG
-				DAG dag = new DAG(Daginput.getText());
-				showInfo.setSize(900,1000);
-				showInfo.setVisible(true);
-			}
-		});
 		//菜单
 		MyMenu menuBar = new MyMenu(textArea);
 		setJMenuBar(menuBar);
@@ -81,6 +55,54 @@ public class MainFrame extends JFrame{
 		errorPanel.add(errorInfo,BorderLayout.NORTH);
 		box.add(errorPanel);
 		add(box);
+        compilerButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFrame showInfo = new JFrame("具体信息展示");
+				FileOperator fo = new FileOperator();
+				Box b1=Box.createHorizontalBox(); 
+				Lex lex = new Lex(textArea.getText());
+				JPanel lexPanel = new JPanel();
+				JTextArea lexTextArea = new JTextArea(fo.showLex(),100,30);
+				JScrollPane lexScrollPane = new JScrollPane(lexTextArea);
+				lexPanel.setSize(200,200);
+				lexPanel.add(lexTextArea);
+				b1.add(lexPanel);
+				showInfo.add(lexScrollPane);
+				//语法
+				Parse p = new Parse();
+				JPanel parsePanel = new JPanel();
+				JTextArea parseTextArea = new JTextArea(fo.showParse(),100,30);
+				JScrollPane parseScrollPane = new JScrollPane(parseTextArea);
+				parsePanel.setSize(200,200);
+				parsePanel.add(parseTextArea);
+				b1.add(parsePanel);
+				showInfo.add(parseScrollPane);
+				//DAG
+				if(c1.isSelected()) {
+					DAG dag = new DAG(Daginput.getText());
+					JTextArea dagInfo = new JTextArea(fo.showDag(),100,30);
+					JPanel dagPanel = new JPanel();
+					dagPanel.add(dagInfo);
+					dagPanel.setSize(200,200);
+					b1.add(dagPanel);
+				}
+				//中间代码
+				SimpleCode sc = new SimpleCode();
+				JPanel midPanel = new JPanel();
+				JTextArea midTextArea = new JTextArea(fo.showMid(),100,30);
+				JScrollPane midScrollPane = new JScrollPane(midTextArea);
+				midPanel.setSize(200,200);
+				midPanel.add(midTextArea);
+				b1.add(midPanel);
+				showInfo.add(b1);
+				//错误信息
+				errorInfo.setText(fo.showError());
+				showInfo.setSize(900,1000);
+				showInfo.setVisible(true);
+			}
+		});
 		//关闭事件
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -89,7 +111,6 @@ public class MainFrame extends JFrame{
 				d.setVisible(true);
 				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			}
-
 		});
 	}
 	//保存对话框

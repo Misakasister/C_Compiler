@@ -264,4 +264,157 @@ public class FileOperator {
 			}
 			return data;
 		}
+		
+		//输入dag优化结果
+		public void writeDag(ArrayList<String> parseData) {
+			File f = new File("src/dag.data");
+			if(!f.exists()) {
+				try {
+					f.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			FileOutputStream fos=null;
+			try {
+				fos = new FileOutputStream(f);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DataOutputStream dos = new DataOutputStream(fos);
+			for(int i = 0; i < parseData.size(); i++) {
+				try {
+					dos.writeUTF(parseData.get(i));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		//展示dag优化结果分析
+		public String showDag() {
+			File f = new File("src/dag.data");
+			FileInputStream fis=null;
+			try {
+				fis = new FileInputStream(f);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DataInputStream dis = new DataInputStream(fis);
+			StringBuffer buffer = new StringBuffer();
+			try {
+				while(dis.available()!=0) {
+					buffer.append(dis.readUTF()+"\n");
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return new String(buffer);
+		}
+		
+		//写错误
+		public void writeError(ArrayList<String> parseData) {
+			File f = new File("src/error.data");
+			if(!f.exists()) {
+				try {
+					f.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			FileOutputStream fos=null;
+			try {
+				fos = new FileOutputStream(f);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DataOutputStream dos = new DataOutputStream(fos);
+			for(int i = 0; i < parseData.size(); i++) {
+				try {
+					dos.writeUTF(parseData.get(i));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		public String showError() {
+			File f = new File("src/error.data");
+			FileInputStream fis=null;
+			try {
+				fis = new FileInputStream(f);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DataInputStream dis = new DataInputStream(fis);
+			StringBuffer buffer = new StringBuffer();
+			try {
+				while(dis.available()!=0) {
+					buffer.append(dis.readUTF()+"\n");
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return new String(buffer);
+		}
+		
+		//写中间表达式
+		public void writeMid(ArrayList<String> parseData) {
+			File f = new File("src/mid.data");
+			if(!f.exists()) {
+				try {
+					f.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			FileOutputStream fos=null;
+			try {
+				fos = new FileOutputStream(f);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DataOutputStream dos = new DataOutputStream(fos);
+			for(int i = 0; i < parseData.size(); i++) {
+				try {
+					dos.writeUTF(parseData.get(i));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		public String showMid() {
+			File f = new File("src/mid.data");
+			FileInputStream fis=null;
+			try {
+				fis = new FileInputStream(f);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DataInputStream dis = new DataInputStream(fis);
+			StringBuffer buffer = new StringBuffer();
+			try {
+				while(dis.available()!=0) {
+					buffer.append(dis.readUTF()+"\n");
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return new String(buffer);
+		}
 }

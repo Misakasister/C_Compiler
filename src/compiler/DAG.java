@@ -14,9 +14,11 @@ public class DAG {
 	private String[] saveVar;//需要保存的变量
 	private char[][] result;//结果
 	private  node[] nodeData;
+	private ArrayList<String> finalOutcome;//保存到文件的数据
 	private int cnt;
 	private boolean[] flag = new boolean[105];
 	public DAG(String temp) {
+		finalOutcome = new ArrayList<String>();
 		fo = new FileOperator();
 		data=fo.readExpress();
 		result = new char[105][20];
@@ -69,9 +71,10 @@ public class DAG {
 		}
 		for(int i = 0; i < cnt; i++) {
 			if(flag[i]) {
-				System.out.println(String.valueOf(result[i]));
+				finalOutcome.add(String.valueOf(result[i]));
 			}
 		}
+		fo.writeDag(finalOutcome);
 	}
 	
 	public boolean find_node(int i,char x) {
